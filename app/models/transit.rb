@@ -1,0 +1,2 @@
+class Transit < ApplicationRecord
+end

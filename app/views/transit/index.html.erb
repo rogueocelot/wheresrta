@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>wheresRTA</title>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
+        <style type="text/css">
+            body { 
+                margin: 0;
+                padding: 0;
+            }
+            #map {
+                width: 100vw;
+                height: 100vh;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="map">
+            <script type="module">
+                import "leaflet-rotatedmarker";
+                //create map
+                var map = L.map('map').setView([41.4760,-81.6930], 12);
+
+                //add the osm map layer
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+                //draw the raillines
+                var redlinecoords = [
+                    //airport
+                    [41.41115,-81.83817],
+                    //park rd
+                    [41.40993,-81.83523],
+                    [41.40968,-81.83423],
+                    [41.40962,-81.83364],
+                    [41.40984,-81.83236],
+                    [41.41051,-81.83156],
+                    //i90 near triskett
+                    [41.46755,-81.78383],
+                    [41.47031,-81.78080],
+                    [41.47158,-81.77888],
+                    [41.47292,-81.77608],
+                    //before cudell bend
+                    [41.47905,-81.75980],
+                    [41.47943,-81.75918],
+                    [41.48059,-81.75807],
+                    [41.48111,-81.75697],
+                    [41.48113,-81.75602],
+                    //after bend before cudell
+                    [41.48084,-81.75481],
+                    [41.47881,-81.74782],
+                    [41.47859,-81.74682],
+                    [41.47848,-81.74578],
+                    //before 69th street bend
+                    [41.47835,-81.73329],
+                    [41.47825,-81.73228],
+                    [41.47812,-81.73158],
+                    //before w65th-lorain
+                    [41.47763,-81.73022],
+                    [41.47638,-81.72767],
+                    [41.47607,-81.72669],
+                    [41.47597,-81.72618],
+                    //past lorain ave
+                    [41.47586,-81.72492],
+                    //w41st
+                    [41.47581,-81.71343],
+                    [41.47574,-81.70980],
+                    [41.47578,-81.70904],
+                    [41.47606,-81.70712],
+                    [41.47639,-81.70597],
+                    [41.47708,-81.70474],
+                    [41.47741,-81.70441],
+                    [41.47971,-81.70187],
+                    [41.48015,-81.70153],
+                    [41.48066,-81.70134],
+                    //us42
+                    [41.48142,-81.70114],
+                    //french st
+                    [41.49188,-81.70151],
+                    [41.49374,-81.70120],
+                    [41.49479,-81.70045],
+                    [41.49540,-81.69974],
+                    //before tower city bend
+                    [41.49747,-81.69688],
+                    [41.49785,-81.69599],
+                    [41.49762,-81.69278],
+                    //after tower city bend
+                    [41.49734,-81.69200],
+                    //west eagle
+                    [41.49477,-81.68793],
+                    [41.49384,-81.68640],
+                    [41.49180,-81.68217],
+                    [41.48944,-81.67702],
+                    [41.48888,-81.67575],
+                    [41.48856,-81.67451],
+                    [41.48843,-81.67356],
+                    [41.48815,-81.67004],
+                    //e30th
+                    [41.48802,-81.66927],
+                    [41.48790,-81.66885],
+                    [41.48765,-81.66820],
+                    //willow freeway
+                    [41.48535,-81.66363],
+                    [41.48501,-81.66309],
+                    [41.48325,-81.66143],
+                    [41.48204,-81.65982],
+                    [41.48071,-81.65780],
+                    [41.48060,-81.65758],
+                    [41.48044,-81.65696],
+                    [41.48021,-81.65382],
+                    //e55th st station
+                    [41.48061,-81.65127],
+                    [41.48099,-81.64891],
+                    [41.48188,-81.64650],
+                    [41.48395,-81.64215],
+                    [41.48410,-81.64165],
+                    [41.48557,-81.63612],
+                    [41.48582,-81.63453],
+                    [41.48614,-81.63111],
+                    [41.48625,-81.63040],
+                    [41.48651,-81.62954],
+                    [41.48694,-81.62859],
+                    //stokes blvd
+                    [41.49751,-81.60837],
+                    [41.49822,-81.60701],
+                    [41.49881,-81.60625],
+                    [41.50546,-81.60138],
+                    [41.50582,-81.60112],
+                    [41.50628,-81.60086],
+                    [41.50687,-81.60065],
+                    [41.50769,-81.60049],
+                    //mayfield rd
+                    [41.50866,-81.60046],
+                    [41.51231,-81.60054],
+                    [41.51297,-81.60046],
+                    [41.51332,-81.60034],
+                    [41.51397,-81.60003],
+                    [41.51489,-81.59945],
+                    [41.51673,-81.59824],
+                    [41.51738,-81.59774],
+                    //auburndale
+                    [41.51842,-81.59676],
+                    [41.52376,-81.59150],
+                    [41.52529,-81.59020],
+                    //eddy rd
+                    [41.52665,-81.58897],
+                    [41.52919,-81.58646],
+                    [41.53053,-81.58504]
+                    
+                ];
+
+                var redline = L.polyline(redlinecoords, {color: '#a60000'}).addTo(map);
+
+                //define green and red line icons
+                //var redarrowpng = <%= image_tag "redarrow.png" %>
+                var redarrow = L.icon({
+                    iconUrl: "<%= asset_path('redarrow.png') %>",
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 20]
+                });
+                //var greenarrowpng = <%= image_tag "greenarrow.png" %>
+                var greenarrow = L.icon({
+                    iconUrl: "<%= asset_path('greenarrow.png') %>",
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 20]
+                });
+
+                //create layergroup
+                var markers = L.layerGroup().addTo(map);
+
+                //add each db entry to the map
+                <% @transits.each do |train| %>
+                    <% if train.lat != nil && train.long != nil %>
+                        var coords = <%= [train.lat, train.long] %>
+                        <%if train.routeid == 66%>
+                            //L.marker([coords[0], coords[1]], {icon: redarrow, rotationAngle: <%= train.bearing.to_i %>}).addTo(map);
+                            //add marker to layergroup
+                            L.marker([coords[0], coords[1]], {icon: redarrow, rotationAngle: <%= train.bearing.to_i %>}).addTo(markers);
+                        <% else %>
+                            //L.marker([coords[0], coords[1]], {icon: greenarrow, rotationAngle: <%= train.bearing.to_i %>}).addTo(map);
+                            L.marker([coords[0], coords[1]], {icon: greenarrow, rotationAngle: <%= train.bearing.to_i %>}).addTo(markers);
+                        <% end %>
+                    <% end %>
+                <% end %>
+
+                setInterval(function() {
+                    //clear old markers
+                    markers.clearLayers();
+                    //fetch updated positions from db
+                    fetch("/transit/transitUpdate").then(res => res.json()).then(body=>{
+                        //for each element readd the marker at new pos
+                        body.forEach((ele) => {
+                            if (ele["routeid"] == 66){
+                                L.marker([ele["lat"], ele["long"]], {icon: redarrow, rotationAngle: ele["bearing"]}).addTo(markers);
+                            } else {
+                                L.marker([ele["lat"], ele["long"]], {icon: greenarrow, rotationAngle: ele["bearing"]}).addTo(markers);
+                            }
+                        }
+                        );
+                    });
+                //update every n seconds
+                }, 20 * 1000);
+
+            </script>
+        </div>
+    </body>
+</html>
