@@ -13,3 +13,70 @@
  *= require_tree .
  *= require_self
  */
+
+#map {
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+ }
+
+#menu {
+    height: 150px;
+    width: 500px;
+    position: fixed;
+    bottom: 0;
+    background-color: #ebe5db;
+    z-index: 2;
+    border-radius: 10px;
+    border: 3px solid #2a18c9;
+    margin: 10px;
+ }
+
+.select-button{
+    float: left;
+}
+  
+.select-button label {
+    border: 3px solid #2a18c9;
+    border-radius: 10px;
+    box-sizing: border-box;
+    color: #332929;
+    background-color: #ebe5db;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 15px;
+    font-weight: 650;
+    line-height: normal;
+    margin: 5px;
+    min-height: 100px;
+    min-width: 110px;
+    padding-top: 30%;
+    text-align: center;
+    transition: all 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
+    touch-action: manipulation;
+    will-change: transform;
+}
+
+.select-button input {
+    display: none;
+}
+
+.select-button:disabled {
+    pointer-events: none;
+}
+
+.select-button label:hover {
+    color: #ebe5db;
+    background-color: #2a18c9;
+}
+
+.select-button label:active,
+.select-button input:focus + label {
+    color: #ebe5db;
+    background-color: #2a18c9;
+}
+
+.select-button input:checked + label {
+    color: #ebe5db;
+    background-color: #2a18c9;
+}
