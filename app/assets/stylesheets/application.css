@@ -21,8 +21,8 @@
  }
 
 #menu {
-    height: 130px;
-    width: 300px;
+    height: 12vh;
+    width: 25vw;
     position: fixed;
     bottom: 0;
     background-color: #ebe5db;
@@ -30,6 +30,10 @@
     border-radius: 10px;
     border: 3px solid #2a18c9;
     margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
  }
 
 .select-button{
@@ -44,13 +48,13 @@
     background-color: #ebe5db;
     cursor: pointer;
     display: inline-block;
-    font-size: 15px;
+    font-size: 20px;
     font-weight: 650;
     line-height: normal;
     margin: 8px;
-    min-height: 100px;
-    min-width: 110px;
-    padding-top: 30%;
+    min-height: 10vh;
+    min-width: 10vh;
+    padding-top: 3vh;
     text-align: center;
     transition: all 350ms cubic-bezier(0.165, 0.84, 0.44, 1);
     touch-action: manipulation;
@@ -83,5 +87,16 @@
 
 .bus-text {
     color: #000000;
-    text-shadow: 0, 0, 1px white, 0, 0, 1px white, 0, 0, 1px white, 0, 0, 1px white;
+    /*text-shadow: 0 0 1px white, 0 0 1px white, 0 0 1px white, 0 0 1px white;*/
+}
+
+.logo {
+    max-height: 7vh;
+    object-fit: contain;
+}
+
+@media screen and (max-width: 1000px) {
+    #menu {
+        width: 90vw;
+    }
 }

@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>wheresRTA</title>
+        <%= favicon_link_tag 'icon.png' %>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
         integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
         crossorigin=""/>
@@ -19,6 +20,9 @@
     </head>
     <body>
         <div id="menu">
+            <div>
+                <img class="logo" src="<%= asset_path 'logo.png' %>">
+            </div>
             <div class="select-button">
                 <input type="radio" name="selection" id="train" value="1" autocomplete="off" checked>
                 <label for="train" unselectable>Rapid</label>
@@ -139,6 +143,9 @@
                 var greenline = L.polyline(greenlinecoords, {color: '#09b068'}).addTo(lines);
                 var redline = L.polyline(redlinecoords, {color: '#a60000'}).addTo(lines);
 
+                //layergroup for the stops
+                var stops = L.layerGroup().addTo(map);
+
                 //define green and red line icons
                 //var redarrowpng = <%= image_tag "redarrow.png" %>
                 var redarrow = L.icon({
@@ -157,6 +164,40 @@
                     iconSize: [40, 40],
                     iconAnchor: [20, 20]
                 })
+
+                //define the stop icons
+                var redstop = L.icon({
+                    iconUrl: "<%= asset_path('redstop.png') %>",
+                    iconSize: [10, 10],
+                    iconAnchor: [5, 5]
+                });
+                //var greenarrowpng = <%= image_tag "greenarrow.png" %>
+                var greenstop = L.icon({
+                    iconUrl: "<%= asset_path('greenstop.png') %>",
+                    iconSize: [10, 10],
+                    iconAnchor: [5, 5]
+                });
+                var bothstop = L.icon({
+                    iconUrl: "<%= asset_path('bothstop.png') %>",
+                    iconSize: [10, 10],
+                    iconAnchor: [5, 5]
+                })
+
+                //add the stops
+                //L.marker([41.41115,-81.83817], {icon: redstop}).addTo(stops);
+                var redLineStops = [[41.41115,-81.83817],[41.41984,-81.82382],[41.44101,-81.80594],[41.45689,-81.79271],[41.46622,-81.78487],[41.47566,-81.76883],[41.48020,-81.75272],[41.47667,-81.72830],[41.48472,-81.70123],[41.48590,-81.63380],[41.49369,-81.61584],[41.50001,-81.60531],[41.50913,-81.60048],[41.52325,-81.59199],[41.53052,-81.58501]];
+                var bothLineStops = [[41.49774,-81.69363],[41.48654,-81.66594],[41.48071,-81.65072]];
+                var greenLineStops = [[41.46592,-81.53795],[41.46662,-81.53967],[41.46662,-81.54605],[41.46661,-81.55370],[41.46661,-81.55928],[41.46659,-81.56537],[41.46859,-81.57270],[41.47229,-81.57695],[41.47587,-81.58106],[41.47919,-81.58489],[41.48213,-81.58818],[41.47858,-81.51784],[41.47857,-81.52062],[41.47855,-81.52725],[41.47852,-81.53690],[41.47852,-81.54342],[41.47851,-81.55014],[41.47902,-81.55871],[41.48090,-81.56530],[41.48173,-81.57194],[41.48245,-81.57770],[41.48330,-81.58457],[41.48394,-81.59152],[41.48409,-81.60347],[41.48272,-81.61862],[41.48066,-81.63336],[41.49643,-81.70046],[41.49948,-81.70359],[41.50417,-81.69916],[41.50542,-81.69644],[41.50654,-81.69400],[41.50928,-81.68826]];
+
+                redLineStops.forEach((ele) => {
+                    L.marker([ele[0],ele[1]], {icon: redstop}).addTo(stops);
+                });
+                bothLineStops.forEach((ele) => {
+                    L.marker([ele[0],ele[1]], {icon: bothstop}).addTo(stops);
+                });
+                greenLineStops.forEach((ele) => {
+                    L.marker([ele[0],ele[1]], {icon: greenstop}).addTo(stops);
+                });
 
                 //create layergroup
                 var markers = L.layerGroup().addTo(map);
@@ -196,6 +237,7 @@
                     //clear old markers and lines
                     markers.clearLayers();
                     lines.clearLayers();
+                    stops.clearLayers();
 
                     if (which == 1){
                         //readd lines if train selected
@@ -203,6 +245,16 @@
                         L.polyline(waterfrontcoords, {color: '#09b068'}).addTo(lines);
                         L.polyline(greenlinecoords, {color: '#09b068'}).addTo(lines);
                         L.polyline(redlinecoords, {color: '#a60000'}).addTo(lines);
+
+                        redLineStops.forEach((ele) => {
+                            L.marker([ele[0],ele[1]], {icon: redstop}).addTo(stops);
+                        });
+                        bothLineStops.forEach((ele) => {
+                            L.marker([ele[0],ele[1]], {icon: bothstop}).addTo(stops);
+                        });
+                        greenLineStops.forEach((ele) => {
+                            L.marker([ele[0],ele[1]], {icon: greenstop}).addTo(stops);
+                        });
                         //fetch updated positions from db
                         fetch("/transit/transitUpdate").then(res => res.json()).then(body=>{
                             //for each element read the marker at new pos
@@ -240,6 +292,7 @@
                     updateTransit();
                     //console.log(which);
                 }
+                //listener for the radio buttons
                 document.addEventListener('DOMContentLoaded', () => {
                     const sel = document.querySelectorAll('input[type="radio"]');
                     sel.forEach(radio => {
