@@ -29,7 +29,6 @@ namespace :update_transit do
         #  print "Rejected: tripid: #{entry[:vehicle][:trip][:trip_id]}, routeid: #{entry[:vehicle][:trip][:route_id].to_i}\n"
         else
           Bus.create(tripid: entry[:vehicle][:trip][:trip_id], routeid: entry[:vehicle][:trip][:route_id].to_i, lat: entry[:vehicle][:position][:latitude].to_f, long: entry[:vehicle][:position][:longitude].to_f, bearing: entry[:vehicle][:position][:bearing].to_f)
-          print "Accepted: tripid: #{entry[:vehicle][:trip][:trip_id]}, routeid: #{entry[:vehicle][:trip][:route_id].to_i}\n"
         end
       end
     end

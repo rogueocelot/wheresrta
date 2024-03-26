@@ -212,10 +212,10 @@
                         <%if train.routeid == 66%>
                             //L.marker([coords[0], coords[1]], {icon: redarrow, rotationAngle: <%= train.bearing.to_i %>}).addTo(map);
                             //add marker to layergroup
-                            L.marker([coords[0], coords[1]], {icon: redarrow, rotationAngle: <%= train.bearing.to_i %>}).addTo(markers);
+                            L.marker([coords[0], coords[1]], {icon: redarrow, rotationAngle: <%= train.bearing.to_i %>, zIndexOffset: 1000}).addTo(markers);
                         <% else %>
                             //L.marker([coords[0], coords[1]], {icon: greenarrow, rotationAngle: <%= train.bearing.to_i %>}).addTo(map);
-                            L.marker([coords[0], coords[1]], {icon: greenarrow, rotationAngle: <%= train.bearing.to_i %>}).addTo(markers);
+                            L.marker([coords[0], coords[1]], {icon: greenarrow, rotationAngle: <%= train.bearing.to_i %>, zIndexOffset: 1000}).addTo(markers);
                         <% end %>
                     <% end %>
                 <% end %>
@@ -260,9 +260,9 @@
                             //for each element read the marker at new pos
                             body.forEach((ele) => {
                                 if (ele["routeid"] == 66){
-                                    L.marker([ele["lat"], ele["long"]], {icon: redarrow, rotationAngle: ele["bearing"]}).addTo(markers);
+                                    L.marker([ele["lat"], ele["long"]], {icon: redarrow, rotationAngle: ele["bearing"], zIndexOffset: 1000}).addTo(markers);
                                 } else {
-                                    L.marker([ele["lat"], ele["long"]], {icon: greenarrow, rotationAngle: ele["bearing"]}).addTo(markers);
+                                    L.marker([ele["lat"], ele["long"]], {icon: greenarrow, rotationAngle: ele["bearing"], zIndexOffset: 1000}).addTo(markers);
                                 }
                             }
                             );
