@@ -21,8 +21,8 @@
  }
 
 #menu {
-    height: 150px;
-    width: 500px;
+    height: 130px;
+    width: 300px;
     position: fixed;
     bottom: 0;
     background-color: #ebe5db;
@@ -47,7 +47,7 @@
     font-size: 15px;
     font-weight: 650;
     line-height: normal;
-    margin: 5px;
+    margin: 8px;
     min-height: 100px;
     min-width: 110px;
     padding-top: 30%;
@@ -79,4 +79,9 @@
 .select-button input:checked + label {
     color: #ebe5db;
     background-color: #2a18c9;
+}
+
+.bus-text {
+    color: #000000;
+    text-shadow: 0, 0, 1px white, 0, 0, 1px white, 0, 0, 1px white, 0, 0, 1px white;
 }

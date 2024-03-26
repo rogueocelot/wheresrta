@@ -18,6 +18,17 @@
         </style>
     </head>
     <body>
+        <div id="menu">
+            <div class="select-button">
+                <input type="radio" name="selection" id="train" value="1" autocomplete="off" checked>
+                <label for="train" unselectable>Rapid</label>
+            </div>
+            <div class="select-button">
+                <input type="radio" name="selection" id="bus" autocomplete="off" value="2">
+                <label for="bus" unselectable>Bus</label>
+            </div>
+        </div>
+
         <div id="map">
             <script type="module">
                 import "leaflet-rotatedmarker";
@@ -120,10 +131,13 @@
                     [41.46662,-81.53966], [41.46659,-81.53932], [41.46650,-81.53906], [41.46630,-81.53867], [41.46592,-81.53795]
                 ];
 
-                var blueline = L.polyline(bluelinecoords, {color: '#09b068'}).addTo(map);
-                var waterfront = L.polyline(waterfrontcoords, {color: '#09b068'}).addTo(map);
-                var greenline = L.polyline(greenlinecoords, {color: '#09b068'}).addTo(map);
-                var redline = L.polyline(redlinecoords, {color: '#a60000'}).addTo(map);
+                //layergroup for the lines
+                var lines = L.layerGroup().addTo(map);
+
+                var blueline = L.polyline(bluelinecoords, {color: '#09b068'}).addTo(lines);
+                var waterfront = L.polyline(waterfrontcoords, {color: '#09b068'}).addTo(lines);
+                var greenline = L.polyline(greenlinecoords, {color: '#09b068'}).addTo(lines);
+                var redline = L.polyline(redlinecoords, {color: '#a60000'}).addTo(lines);
 
                 //define green and red line icons
                 //var redarrowpng = <%= image_tag "redarrow.png" %>
@@ -138,9 +152,17 @@
                     iconSize: [40, 40],
                     iconAnchor: [20, 20]
                 });
+                var grayarrow = L.icon({
+                    iconUrl: "<%= asset_path('grayarrow.png') %>",
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 20]
+                })
 
                 //create layergroup
                 var markers = L.layerGroup().addTo(map);
+
+                //1 for trains, 2 for buses
+                var which = 1
 
                 //add each db entry to the map
                 <% @transits.each do |train| %>
@@ -157,36 +179,76 @@
                     <% end %>
                 <% end %>
 
-                setInterval(function() {
-                    //clear old markers
+                /*<% @buses.each do |bus| %>
+                    <% if bus.lat != nil && bus.long != nil %>
+                        var coords = <%= [bus.lat, bus.long] %>
+                        L.marker([coords[0], coords[1]], {icon: grayarrow, rotationAngle: <%= bus.bearing.to_i %>}).addTo(markers);
+                        L.marker([coords[0], coords[1]], {
+                            icon: L.divIcon({
+                                html: "<%= bus.routeid %>",
+                                className: 'bus-text'
+                            })}).addTo(markers);
+                    <% end %>
+                <% end %> */
+
+                //window.updateTransit=function() {
+                function updateTransit() {
+                    //clear old markers and lines
                     markers.clearLayers();
-                    //fetch updated positions from db
-                    fetch("/transit/transitUpdate").then(res => res.json()).then(body=>{
-                        //for each element readd the marker at new pos
-                        body.forEach((ele) => {
-                            if (ele["routeid"] == 66){
-                                L.marker([ele["lat"], ele["long"]], {icon: redarrow, rotationAngle: ele["bearing"]}).addTo(markers);
-                            } else {
-                                L.marker([ele["lat"], ele["long"]], {icon: greenarrow, rotationAngle: ele["bearing"]}).addTo(markers);
+                    lines.clearLayers();
+
+                    if (which == 1){
+                        //readd lines if train selected
+                        L.polyline(bluelinecoords, {color: '#09b068'}).addTo(lines);
+                        L.polyline(waterfrontcoords, {color: '#09b068'}).addTo(lines);
+                        L.polyline(greenlinecoords, {color: '#09b068'}).addTo(lines);
+                        L.polyline(redlinecoords, {color: '#a60000'}).addTo(lines);
+                        //fetch updated positions from db
+                        fetch("/transit/transitUpdate").then(res => res.json()).then(body=>{
+                            //for each element read the marker at new pos
+                            body.forEach((ele) => {
+                                if (ele["routeid"] == 66){
+                                    L.marker([ele["lat"], ele["long"]], {icon: redarrow, rotationAngle: ele["bearing"]}).addTo(markers);
+                                } else {
+                                    L.marker([ele["lat"], ele["long"]], {icon: greenarrow, rotationAngle: ele["bearing"]}).addTo(markers);
+                                }
                             }
-                        }
-                        );
-                    });
+                            );
+                        });
+                    } else {
+                        //fetch updated positions from db
+                        fetch("/transit/busUpdate").then(res => res.json()).then(body=>{
+                            //for each element read the marker at new pos
+                            body.forEach((ele) => {
+                                L.marker([ele["lat"], ele["long"]], {icon: grayarrow, rotationAngle: ele["bearing"]}).addTo(markers);
+                                L.marker([ele["lat"], ele["long"]], {
+                                    icon: L.divIcon({
+                                        html: ele["routeid"],
+                                        className: 'bus-text'
+                                })}).addTo(markers);
+                            });
+                        });
+                    }
+                };
+
                 //update every n seconds
-                }, 20 * 1000);
+                setInterval(updateTransit, 20 * 1000);
+
+                //change 'which' whenever the user selects a different button
+                function buttonChange() {
+                    which = event.target.value;
+                    updateTransit();
+                    //console.log(which);
+                }
+                document.addEventListener('DOMContentLoaded', () => {
+                    const sel = document.querySelectorAll('input[type="radio"]');
+                    sel.forEach(radio => {
+                        radio.addEventListener('change', buttonChange);
+                    });
+                });
 
             </script>
         </div>
 
-        <div id="menu">
-            <div class="select-button">
-                <input type="radio" name="sel" id="train" onchange="func1()" value="1"checked>
-                <label for="train" unselectable>Rapid</label>
-            </div>
-            <div class="select-button">
-                <input type="radio" name="sel" id="bus" onchange="func2()" value="2">
-                <label for="bus" unselectable>Bus</label>
-            </div>
-        </div>
     </body>
 </html>
