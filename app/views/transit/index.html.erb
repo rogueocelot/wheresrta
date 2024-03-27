@@ -150,19 +150,22 @@
                 //var redarrowpng = <%= image_tag "redarrow.png" %>
                 var redarrow = L.icon({
                     iconUrl: "<%= asset_path('redarrow.png') %>",
-                    iconSize: [40, 40],
-                    iconAnchor: [20, 20]
+                    iconSize: [18, 34],
+                    iconAnchor: [9, 17]
                 });
                 //var greenarrowpng = <%= image_tag "greenarrow.png" %>
                 var greenarrow = L.icon({
                     iconUrl: "<%= asset_path('greenarrow.png') %>",
-                    iconSize: [40, 40],
-                    iconAnchor: [20, 20]
+                    /* for the old icons
+                    iconSize: [34, 34],
+                    iconAnchor: [17, 17] */
+                    iconSize: [18, 34],
+                    iconAnchor: [9, 17]
                 });
-                var grayarrow = L.icon({
-                    iconUrl: "<%= asset_path('grayarrow.png') %>",
-                    iconSize: [40, 40],
-                    iconAnchor: [20, 20]
+                var bluearrow = L.icon({
+                    iconUrl: "<%= asset_path('bluearrow.png') %>",
+                    iconSize: [18, 34],
+                    iconAnchor: [9, 17]
                 })
 
                 //define the stop icons
@@ -223,7 +226,7 @@
                 /*<% @buses.each do |bus| %>
                     <% if bus.lat != nil && bus.long != nil %>
                         var coords = <%= [bus.lat, bus.long] %>
-                        L.marker([coords[0], coords[1]], {icon: grayarrow, rotationAngle: <%= bus.bearing.to_i %>}).addTo(markers);
+                        L.marker([coords[0], coords[1]], {icon: bluearrow, rotationAngle: <%= bus.bearing.to_i %>}).addTo(markers);
                         L.marker([coords[0], coords[1]], {
                             icon: L.divIcon({
                                 html: "<%= bus.routeid %>",
@@ -272,7 +275,7 @@
                         fetch("/transit/busUpdate").then(res => res.json()).then(body=>{
                             //for each element read the marker at new pos
                             body.forEach((ele) => {
-                                L.marker([ele["lat"], ele["long"]], {icon: grayarrow, rotationAngle: ele["bearing"]}).addTo(markers);
+                                L.marker([ele["lat"], ele["long"]], {icon: bluearrow, rotationAngle: ele["bearing"]}).addTo(markers);
                                 L.marker([ele["lat"], ele["long"]], {
                                     icon: L.divIcon({
                                         html: ele["routeid"],

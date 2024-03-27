@@ -22,13 +22,15 @@
 
 #menu {
     height: 12vh;
-    width: 25vw;
+    max-width: fit-content;
+    max-height: fit-content;
+    /*width: 25vw;*/
     position: fixed;
     bottom: 0;
     background-color: #ebe5db;
     z-index: 2;
     border-radius: 10px;
-    border: 3px solid #2a18c9;
+    border: 3px solid #0052f5;
     margin: 10px;
     display: flex;
     align-items: center;
@@ -41,15 +43,17 @@
 }
   
 .select-button label {
-    border: 3px solid #2a18c9;
+    border: 3px solid #0052f5;
     border-radius: 10px;
     box-sizing: border-box;
     color: #332929;
     background-color: #ebe5db;
     cursor: pointer;
     display: inline-block;
-    font-size: 20px;
+    /*font-size: 24px;*/
+    font-size: 3vh;
     font-weight: 650;
+    font-family: Arial, Helvetica, sans-serif;
     line-height: normal;
     margin: 8px;
     min-height: 10vh;
@@ -71,28 +75,32 @@
 
 .select-button label:hover {
     color: #ebe5db;
-    background-color: #2a18c9;
+    background-color: #0052f5;
 }
 
 .select-button label:active,
 .select-button input:focus + label {
     color: #ebe5db;
-    background-color: #2a18c9;
+    background-color: #0052f5;
 }
 
 .select-button input:checked + label {
     color: #ebe5db;
-    background-color: #2a18c9;
+    background-color: #0052f5;
 }
 
 .bus-text {
-    color: #000000;
-    /*text-shadow: 0 0 1px white, 0 0 1px white, 0 0 1px white, 0 0 1px white;*/
+    color: #ebe5db;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    text-shadow: 0 0 1px #0052f5, 0 0 1px #0052f5, 0 0 1px #0052f5, 0 0 1px #0052f5;
 }
 
 .logo {
     max-height: 7vh;
     object-fit: contain;
+    float: left;
+    margin: 8px;
 }
 
 @media screen and (max-width: 1000px) {
