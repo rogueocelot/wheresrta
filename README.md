@@ -1,6 +1,6 @@
 # wheresrta  
 
-![Logo](app/assets/images/logo.png.png?raw=true)
+![Logo](app/assets/images/logo.png?raw=true)
 
 wheresrta.net uses the GTFS-RT data provided by Cleveland's RTA to track the real time location of Cleveland Transit.  
 
