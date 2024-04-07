@@ -4,7 +4,7 @@
 <img src="app/assets/images/logo.png" width="350">
 </p>
 
-wheresrta.net uses the GTFS-RT data provided by Cleveland's RTA to track the real time location of Cleveland Transit.  
+wheresrta.net uses the GTFS-RT data provided by Cleveland's RTA to track the real time location of Cleveland transit.  
 
 ## Running  
 
@@ -13,6 +13,7 @@ wheresrta.net uses the GTFS-RT data provided by Cleveland's RTA to track the rea
 To install the required gems and start the server do:  
 ```bash
 bundle install
+bin.rails db:migrate
 bin/rails server
 ```  
 
