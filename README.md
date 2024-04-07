@@ -1,24 +1,22 @@
-# README
+# wheresrta  
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+![Logo](app/assets/images/logo.png.png?raw=true)
 
-Things you may want to cover:
+wheresrta.net uses the GTFS-RT data provided by Cleveland's RTA to track the real time location of Cleveland Transit.  
 
-* Ruby version
+## Running  
 
-* System dependencies
+### Setup  
 
-* Configuration
+To install the required gems and start the server do:  
+```bash
+bundle install
+bin/rails server
+```  
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+### Running:  
+To update the database with the current location do:  
+```bash
+rake update_transit:update
+```
+I have this set to a 2 minute cron job (I notice rate limiting when I attempt 1 minute)  
