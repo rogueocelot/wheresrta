@@ -39,11 +39,15 @@
                 //create map
                 var map = L.map('map').setView([41.4760,-81.6930], 12);
 
+                //add link to wheresrta github
+                map.attributionControl.addAttribution('<a href="https://github.com/rogueocelot/wheresrta">Github</a>');
+
                 //add the osm map layer
                 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
                 }).addTo(map);
+
 
                 //draw the raillines
                 var redlinecoords = [
@@ -215,10 +219,13 @@
                         <%if train.routeid == 66%>
                             //L.marker([coords[0], coords[1]], {icon: redarrow, rotationAngle: <%= train.bearing.to_i %>}).addTo(map);
                             //add marker to layergroup
-                            L.marker([coords[0], coords[1]], {icon: redarrow, rotationAngle: <%= train.bearing.to_i %>, zIndexOffset: 1000}).addTo(markers);
+                            L.marker([coords[0], coords[1]], {icon: redarrow, rotationAngle: <%= train.bearing.to_i %>, zIndexOffset: 1000})
+                            .bindPopup("<b>ID:</b> <%= train.tripid %><br><b>Updated:</b> <%= train.updatedtime %>").addTo(markers);
+                            //m.bindPopup("ID: <%= train.tripid %><br>Updated At: <%= train.updatedtime %>")
                         <% else %>
                             //L.marker([coords[0], coords[1]], {icon: greenarrow, rotationAngle: <%= train.bearing.to_i %>}).addTo(map);
-                            L.marker([coords[0], coords[1]], {icon: greenarrow, rotationAngle: <%= train.bearing.to_i %>, zIndexOffset: 1000}).addTo(markers);
+                            L.marker([coords[0], coords[1]], {icon: greenarrow, rotationAngle: <%= train.bearing.to_i %>, zIndexOffset: 1000})
+                            .bindPopup("<b>ID:</b> <%= train.tripid %><br><b>Updated:</b> <%= train.updatedtime %>").addTo(markers);
                         <% end %>
                     <% end %>
                 <% end %>
@@ -263,9 +270,11 @@
                             //for each element read the marker at new pos
                             body.forEach((ele) => {
                                 if (ele["routeid"] == 66){
-                                    L.marker([ele["lat"], ele["long"]], {icon: redarrow, rotationAngle: ele["bearing"], zIndexOffset: 1000}).addTo(markers);
+                                    L.marker([ele["lat"], ele["long"]], {icon: redarrow, rotationAngle: ele["bearing"], zIndexOffset: 1000})
+                                    .bindPopup("<b>ID:</b>" + ele["tripid"] + "<br><b>Updated:</b>"+ ele["updatedtime"]).addTo(markers);
                                 } else {
-                                    L.marker([ele["lat"], ele["long"]], {icon: greenarrow, rotationAngle: ele["bearing"], zIndexOffset: 1000}).addTo(markers);
+                                    L.marker([ele["lat"], ele["long"]], {icon: greenarrow, rotationAngle: ele["bearing"], zIndexOffset: 1000})
+                                    .bindPopup("<b>ID:</b>" + ele["tripid"] + "<br><b>Updated:</b>"+ ele["updatedtime"]).addTo(markers);
                                 }
                             }
                             );
@@ -275,12 +284,16 @@
                         fetch("/transit/busUpdate").then(res => res.json()).then(body=>{
                             //for each element read the marker at new pos
                             body.forEach((ele) => {
-                                L.marker([ele["lat"], ele["long"]], {icon: bluearrow, rotationAngle: ele["bearing"]}).addTo(markers);
+                                L.marker([ele["lat"], ele["long"]], {icon: bluearrow, rotationAngle: ele["bearing"]})
+                                .bindPopup("<b>ID:</b>" + ele["tripid"] + "<br><b>Updated:</b>"+ ele["updatedtime"]).addTo(markers);
+
+
                                 L.marker([ele["lat"], ele["long"]], {
                                     icon: L.divIcon({
                                         html: ele["routeid"],
                                         className: 'bus-text'
-                                })}).addTo(markers);
+                                })})
+                                .bindPopup("<b>ID:</b>" + ele["tripid"] + "<br><b>Updated:</b>"+ ele["updatedtime"]).addTo(markers);
                             });
                         });
                     }

@@ -1,6 +1,7 @@
 require "open-uri"
 require 'google/protobuf'
 require_relative 'gtfs-realtime_pb.rb'
+require 'date'
 
 namespace :update_transit do
   desc "Fetch transit data"
@@ -24,11 +25,11 @@ namespace :update_transit do
         if entry[:vehicle][:trip][:route_id] == "66" || entry[:vehicle][:trip][:route_id] == "67"
           #create db entry
           #print "Accepted: tripid: #{entry[:vehicle][:trip][:trip_id]}, routeid: #{entry[:vehicle][:trip][:route_id].to_i}\n"
-          Transit.create(tripid: entry[:vehicle][:trip][:trip_id], routeid: entry[:vehicle][:trip][:route_id].to_i, lat: entry[:vehicle][:position][:latitude].to_f, long: entry[:vehicle][:position][:longitude].to_f, bearing: entry[:vehicle][:position][:bearing].to_f)
+          Transit.create(tripid: entry[:vehicle][:trip][:trip_id], routeid: entry[:vehicle][:trip][:route_id].to_i, lat: entry[:vehicle][:position][:latitude].to_f, long: entry[:vehicle][:position][:longitude].to_f, bearing: entry[:vehicle][:position][:bearing].to_f, updatedtime: Time.at(entry[:vehicle][:timestamp]).to_datetime.strftime("%m/%d %H:%M:%S %z"))
         #else
         #  print "Rejected: tripid: #{entry[:vehicle][:trip][:trip_id]}, routeid: #{entry[:vehicle][:trip][:route_id].to_i}\n"
         else
-          Bus.create(tripid: entry[:vehicle][:trip][:trip_id], routeid: entry[:vehicle][:trip][:route_id].to_i, lat: entry[:vehicle][:position][:latitude].to_f, long: entry[:vehicle][:position][:longitude].to_f, bearing: entry[:vehicle][:position][:bearing].to_f)
+          Bus.create(tripid: entry[:vehicle][:trip][:trip_id], routeid: entry[:vehicle][:trip][:route_id].to_i, lat: entry[:vehicle][:position][:latitude].to_f, long: entry[:vehicle][:position][:longitude].to_f, bearing: entry[:vehicle][:position][:bearing].to_f, updatedtime: Time.at(entry[:vehicle][:timestamp]).to_datetime.strftime("%m/%d %H:%M:%S %z"))
         end
       end
     end
